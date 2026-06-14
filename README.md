@@ -88,8 +88,8 @@
 ## Evaluation Report
 
 <!-- Run your 5 test questions from planning.md through your system and record the results.
-     Be honest — a partially accurate or inaccurate result that you explain well is more
-     valuable than a suspiciously perfect result. -->
+     Be honest — a partially accurate or inaccurate result that you explain well is more 
+     valuable than a suspiciously perfect result. --> 
 
 | # | Question | Expected answer | System response (summarized) | Retrieval quality | Response accuracy |
 |---|----------|-----------------|------------------------------|-------------------|-------------------|

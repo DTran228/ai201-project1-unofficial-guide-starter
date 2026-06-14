@@ -11,6 +11,10 @@
 
 <!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
 
+My domain is housing options for undergraduate students at U.S. universities.
+
+This domain focuses on helping students understand and compare common housing choices, such as traditional residence halls, suite-style housing, apartment-style campus housing, living-learning communities, Greek housing, off-campus apartments, homestays, and commuter options. This knowledge can be hard to find because every university explains housing differently, and practical advice is often scattered across housing office pages, student handbooks, Reddit threads, review sites, and student videos.
+
 ---
 
 ## Documents
@@ -20,16 +24,16 @@
 
 | # | Source | Description | URL or location |
 |---|--------|-------------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 |Reddit thread: “What’s university accommodation like in the US?” | This thread gives informal explanations of what university housing is like in the U.S., including dorms, roommates, shared facilities, and differences between American university accommodation and other countries’ systems. It is useful for understanding practical student experiences rather than only official university policies. | https://www.reddit.com/r/AskAnAmerican/comments/1h8wkwa/whats_university_accommodation_like_in_the_us/ |
+| 2 | Study in the USA — “Making the Right Housing Choice: Tips for Success” | Explains common U.S. housing options for international students, including dorms, apartments, homestays, and student housing communities. | Making the Right Housing Choice_ Tips for Success.pdf |
+| 3 | IEFA — “Finding Student Housing in the U.S. for International Students” | Guide to finding safe and affordable student housing, with advice on location, leases, roommates, commute, scams, and deposits. | https://www.iefa.org/resources/finding-student-housing-in-the-us-for-international-students |
+| 4 | Times Higher Education — “Six essential tips for finding student housing in the US” | Gives practical tips on choosing housing type, location, budget, social environment, fees, furnishings, and safety. | https://www.timeshighereducation.com/student/advice/six-essential-tips-finding-student-housing-us |
+| 5 | College Raptor — “6 Types of Student Housing Options for College Students” | Explains common on-campus and off-campus housing types, including dorms, apartment-style housing, Greek housing, apartments, houses, and living at home. | https://www.collegeraptor.com/find-colleges/articles/college-search/types-of-student-housing/ |
+| 6 | OnlineMacha forum — “What are the accommodation options available in the US?” | Forum discussion about U.S. accommodation options, including on-campus housing, off-campus apartments, homestays, temporary housing, leases, utilities, and apartment search tips. | https://onlinemacha.com/forum/study-in-usa/what-are-the-accommodation-options-available-in-the-us/#google_vignette |
+| 7 | U.S. News — “College Student Housing: Should I Live On Campus or Off?” | Compares on-campus and off-campus housing, including cost, hidden expenses, independence, campus resources, financial aid, lease length, and safety. | https://www.usnews.com/education/best-colleges/paying-for-college/articles/what-to-know-about-choosing-between-housing-on-or-off-campus |
+| 8 | Futurense — “Finding the Best Student Accommodation in the USA: Complete Guide” | Guide to U.S. student accommodation options, including on-campus housing, shared apartments, homestays, private housing, budget, location, safety, reviews, and lease terms. | https://futurense.com/blog/best-student-accommodation-in-the-usa |
+| 9 | Keystone Sports — “University Accommodation Options in the US” | Explains four U.S. university housing options: residence halls, student apartments, off-campus apartments, and homestays, with pros and cons for each. | https://keystonesports.uk/university-accommodation-options-in-the-us/ |
+| 10 | Illustrarch — “Complete Guide to Student Housing in the USA” | Guide to student housing in the U.S., including dorms, off-campus housing, homestays, shared apartments, budgeting, location, amenities, leases, and roommate agreements. | https://illustrarch.com/schooling/41550-complete-guide-to-student-housing-in-the-usa.html |
 
 ---
 
