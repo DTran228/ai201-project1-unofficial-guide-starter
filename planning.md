@@ -44,11 +44,13 @@ This domain focuses on helping students understand and compare common housing ch
      numbers fit the structure of your documents.
      A review-heavy corpus warrants different chunking than a long FAQ. -->
 
-**Chunk size:**
+My documents are mostly long guide articles and forum discussions, not short 1–3 sentence reviews. Many of them have clear headings such as on-campus housing, off-campus housing, homestays, cost, lease terms, roommates, safety, and commute. Because of that, I will split the documents by section/topic first, then keep each chunk around the same size.
 
-**Overlap:**
+I will use a chunk size of about 400 tokens with about 75 tokens of overlap. This size should be large enough to keep one full housing idea together, such as the pros and cons of dorms or the explanation of lease terms. It is also small enough to avoid mixing too many different topics in one chunk.
 
-**Reasoning:**
+The overlap is useful because some important information may continue from one paragraph into the next. For example, a source might explain off-campus housing in one paragraph and then list hidden costs in the next paragraph. With overlap, the retriever is less likely to lose important context.
+
+I would know my chunks are too small if the system retrieves text that mentions a topic but does not have enough detail to answer the question. For example, a tiny chunk might only say “off-campus housing gives students more independence” but not explain costs, leases, or commute. I would know my chunks are too large if the retrieved chunk contains too many topics at once, such as dorms, homestays, leases, and scams together, making the answer less focused.
 
 ---
 
@@ -60,11 +62,13 @@ This domain focuses on helping students understand and compare common housing ch
      would you weigh in choosing a different embedding model — context length, multilingual
      support, accuracy on domain-specific text, latency? -->
 
-**Embedding model:**
+I plan to use all-MiniLM-L6-v2 through sentence-transformers as my embedding model. This model is small, fast, and good enough for semantic search over short guide-style chunks.
 
-**Top-k:**
+I will retrieve the top 4 chunks for each user question. If I retrieve too few chunks, the LLM may not have enough context to answer comparison questions. If I retrieve too many chunks, the answer may become noisy or include unrelated information. Top 4 is a reasonable starting point because it gives enough context without overwhelming the prompt.
 
-**Production tradeoff reflection:**
+Semantic search is useful because users may ask questions using different words from the documents. For example, a user might ask “Should I live in a dorm?” while the documents may say “on-campus housing,” “residence halls,” or “university dormitories.” Embeddings can still connect these similar meanings even when the exact words are different.
+
+If I were deploying this for real users and cost was not a constraint, I would consider a stronger embedding model with better accuracy and longer context length. I would also consider multilingual support because international students may ask questions in different languages. However, stronger models may be slower or more expensive, so I would need to balance accuracy, latency, and cost.
 
 ---
 
@@ -77,11 +81,11 @@ This domain focuses on helping students understand and compare common housing ch
 
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| 1 | What are the main housing options for students at U.S. universities? | Common options include on-campus dorms, apartment-style housing, off-campus apartments or houses, shared housing, homestays, Greek housing, private student housing, and living at home if possible. |
+| 2 | What are the main benefits of living on campus? | On-campus housing is close to classes and campus facilities, helps students meet people, may include meal plans, and often has campus support, security, or residence staff. |
+| 3 | What extra costs should students consider before choosing off-campus housing? | Students should consider utilities, internet, groceries, furniture, transportation, parking, security deposits, application fees, and longer lease terms. |
+| 4 | Why might an international student choose a homestay? | A homestay can provide cultural experience, English practice, meals, a furnished room, a supportive family environment, and help adjusting to life in the U.S. |
+| 5 | What should students compare before choosing a housing option? | Students should compare budget, location, commute, safety, privacy, roommates, lease terms, furniture, meal plans, social environment, and lifestyle needs. |
 
 ---
 
@@ -91,9 +95,11 @@ This domain focuses on helping students understand and compare common housing ch
      Consider: noisy or inconsistent documents, missing source attribution, off-topic
      retrieval, chunks that split key information across boundaries. -->
 
-1.
+1. Many sources repeat similar information about dorms, apartments, and homestays. This could make the system retrieve repetitive chunks instead of giving different useful perspectives.
 
-2.
+2. Some sources are informal, such as Reddit or forum threads. These can be useful for student experience, but they may be subjective or inconsistent, so the system should not treat them as official policy.
+
+3. Some housing information depends on the university or city. Cost, housing rules, lease terms, and availability can vary a lot, so the system should avoid making claims that sound true for every school.
 
 ---
 
@@ -105,6 +111,20 @@ This domain focuses on helping students understand and compare common housing ch
      You can use ASCII art, a Mermaid diagram, or embed a sketch as an image.
      You'll use this diagram as context when prompting AI tools to implement each stage. -->
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A[Document Ingestion<br/>Sources: PDFs, URLs, Reddit/forum threads<br/>Tools: Python loaders / manual collection]
+    --> B[Chunking<br/>Split by topic/section<br/>~400 tokens, 75-token overlap<br/>Tool: custom Python chunk_text()]
+
+    B --> C[Embedding + Vector Store<br/>Embedding model: all-MiniLM-L6-v2<br/>Library: sentence-transformers<br/>Vector DB: ChromaDB]
+
+    C --> D[Retrieval<br/>Embed user query<br/>Retrieve top 4 relevant chunks<br/>Tool: ChromaDB similarity search]
+
+    D --> E[Generation<br/>Send question + retrieved chunks to LLM<br/>Tool: ChatGPT / LLM for final answer]
+
+This pipeline starts with document ingestion, where I collect housing-related sources from PDFs, websites, and forum threads. Then I clean and split the text into topic-based chunks. After that, I create embeddings with all-MiniLM-L6-v2 and store them in ChromaDB. When a user asks a question, the system retrieves the top 4 most relevant chunks and sends them to the LLM to generate the final answer.
 ---
 
 ## AI Tool Plan
@@ -118,6 +138,18 @@ This domain focuses on helping students understand and compare common housing ch
      "I'll use AI to help me code" is not a plan.
      "I'll give Claude my Chunking Strategy section and ask it to implement chunk_text()
      with my specified chunk size and overlap" is a plan. -->
+
+I will use ChatGPT to help with the planning and implementation of the RAG pipeline.
+
+First, I will give ChatGPT my Domain, Documents, and Chunking Strategy sections and ask it to help design a chunk_text() function. I expect it to produce Python code that splits documents by headings and then applies a 400-token chunk size with 75-token overlap.
+
+Second, I will use ChatGPT or Copilot to help write the document loading code. I will give it the list of PDF files and URLs from my Documents section and ask for code that can load the text, clean it, and store source metadata.
+
+Third, I will ask ChatGPT to help implement the embedding and retrieval part. I will provide the Retrieval Approach section and ask for Python code using sentence-transformers, all-MiniLM-L6-v2, and ChromaDB.
+
+Fourth, I will use ChatGPT to help test the system with my five evaluation questions. I will give it the Evaluation Plan and ask it to compare the system’s answers with the expected answers.
+
+Finally, I will use AI tools for debugging. If the retriever returns bad chunks, I will show ChatGPT the query, retrieved chunks, and expected answer, then ask how to improve chunking, metadata, or top-k retrieval.
 
 **Milestone 3 — Ingestion and chunking:**
 
