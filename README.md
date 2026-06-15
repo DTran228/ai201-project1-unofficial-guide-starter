@@ -136,57 +136,57 @@ This does not fully guarantee perfect citation behavior, but it makes the respon
 
 ## Failure Case Analysis
 
-<!-- Identify at least one question where retrieval or generation did not work as expected.
-     Write a specific explanation of *why* it failed, tied to a part of the pipeline.
-
-     "The answer was wrong" is not an explanation.
-
-     "The relevant information was split across a chunk boundary, so retrieval returned
-     only half the context — the model didn't have enough to answer correctly" is an explanation.
-
-     "The embedding model treated the professor's nickname as out-of-vocabulary and returned
-     results from an unrelated review" is an explanation. -->
-
 **Question that failed:**
+
+What is the tuition at Denison University?
 
 **What the system returned:**
 
+The system correctly answered that the available documents do not provide enough information to answer the question. However, during testing, the interface still displayed one weakly related retrieved source from the housing documents with a relatively high distance score.
+
 **Root cause (tied to a specific pipeline stage):**
 
+The issue came from the retrieval and source attribution stage, not the generation stage. Vector search always returns the closest available chunks, even when the question is outside the document collection. Since the question asked about Denison tuition and my documents only cover general U.S. student housing options, the retrieved chunk was not actually useful. The LLM grounding instruction worked because the model refused to answer, but the interface still surfaced a weak retrieved source.
+
 **What you would change to fix it:**
+
+I would make the retrieval filter stricter by lowering the maximum distance threshold so weak matches are removed before generation. I would also update the interface so that when the model says the documents do not contain enough information, the sources box displays “No sources cited because the retrieved context was not sufficient.” This would make the system clearer and prevent users from thinking an irrelevant source supported the refusal.
 
 ---
 
 ## Spec Reflection
 
-<!-- Reflect on how planning.md shaped your implementation.
-     Answer both questions with at least 2–3 sentences each. -->
-
 **One way the spec helped you during implementation:**
 
+The spec helped me break the project into clear stages instead of trying to build the whole RAG system at once. The planning stage made me define my domain, documents, chunking strategy, retrieval approach, evaluation questions, and architecture before writing the code. This made the implementation easier because I already knew what documents to collect, how large my chunks should be, which embedding model to use, and what questions I would use to test the system.
+
 **One way your implementation diverged from the spec, and why:**
+
+My implementation diverged from the original plan because I had to do more manual cleaning and filtering than expected. Several sources, especially web pages saved as PDFs and the Reddit thread, contained boilerplate text such as ads, navigation text, footer links, promoted content, and unrelated keyword lists. After inspecting the generated chunks, I added a filtering step to remove noisy chunks and renumbered the remaining chunk IDs so the vector store would contain cleaner, more useful data.
 
 ---
 
 ## AI Usage
 
-<!-- Describe at least 2 specific instances where you used an AI tool during this project.
-     For each: what did you give the AI as input, what did it produce, and what did you
-     change, override, or direct differently?
-
-     "I used Claude to help me code" is not sufficient.
-     "I gave Claude my Chunking Strategy section from planning.md and asked it to implement
-     chunk_text(). It returned a function using a fixed character split. I overrode the
-     chunk size from 500 to 200 because my documents are short reviews, not long guides." -->
-
 **Instance 1**
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+- *What I gave the AI:*  
+I gave the AI my project domain, document list, and chunking plan from `planning.md`. I explained that my sources were long guide articles, PDFs, and forum threads about student housing options in the U.S.
+
+- *What it produced:*  
+The AI helped me design an ingestion and chunking script that loads PDF and text files, cleans the text, splits the documents into overlapping chunks, and saves the final chunks into `processed/chunks.json`.
+
+- *What I changed or overrode:*  
+I adjusted the cleaning process after inspecting the generated chunks. Some chunks still contained promotional text, footer content, Reddit interface text, or keyword lists, so I manually identified bad chunks and added a filtering step to remove them. I also renumbered chunk IDs after filtering so the metadata stayed organized.
 
 **Instance 2**
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+- *What I gave the AI:*  
+I gave the AI my retrieval approach, including the `all-MiniLM-L6-v2` embedding model, ChromaDB as the vector store, top-k retrieval, and the requirement that answers must be grounded in retrieved chunks only.
+
+- *What it produced:*  
+The AI helped me write the embedding, retrieval, generation, and Gradio interface code. The generated code embeds chunks, stores them in ChromaDB with source metadata, retrieves the most relevant chunks for a query, passes those chunks to a Groq LLM, and displays both the answer and the retrieved source chunks in the interface.
+
+- *What I changed or overrode:*  
+I made the grounding behavior stricter by adding a system prompt that tells the model to answer only from the retrieved context and to say when the documents do not contain enough information. I also added a maximum distance threshold so weak retrieval matches are filtered out, and I surfaced source attribution programmatically by showing the retrieved source file names, chunk IDs, and distance scores.
+
