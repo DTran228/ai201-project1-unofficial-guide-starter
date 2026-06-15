@@ -25,7 +25,7 @@ This domain focuses on helping students understand and compare common housing ch
 | # | Source | Description | URL or location |
 |---|--------|-------------|-----------------|
 | 1 |Reddit thread: “What’s university accommodation like in the US?” | This thread gives informal explanations of what university housing is like in the U.S., including dorms, roommates, shared facilities, and differences between American university accommodation and other countries’ systems. It is useful for understanding practical student experiences rather than only official university policies. | https://www.reddit.com/r/AskAnAmerican/comments/1h8wkwa/whats_university_accommodation_like_in_the_us/ |
-| 2 | Study in the USA — “Making the Right Housing Choice: Tips for Success” | Explains common U.S. housing options for international students, including dorms, apartments, homestays, and student housing communities. | Making the Right Housing Choice_ Tips for Success.pdf |
+| 2 | Study in the USA — “Making the Right Housing Choice: Tips for Success” | Explains common U.S. housing options for international students, including dorms, apartments, homestays, and student housing communities. | https://www.studyusa.com/en/article/housing-options-for-international-college-students-in-the-us |
 | 3 | IEFA — “Finding Student Housing in the U.S. for International Students” | Guide to finding safe and affordable student housing, with advice on location, leases, roommates, commute, scams, and deposits. | https://www.iefa.org/resources/finding-student-housing-in-the-us-for-international-students |
 | 4 | Times Higher Education — “Six essential tips for finding student housing in the US” | Gives practical tips on choosing housing type, location, budget, social environment, fees, furnishings, and safety. | https://www.timeshighereducation.com/student/advice/six-essential-tips-finding-student-housing-us |
 | 5 | College Raptor — “6 Types of Student Housing Options for College Students” | Explains common on-campus and off-campus housing types, including dorms, apartment-style housing, Greek housing, apartments, houses, and living at home. | https://www.collegeraptor.com/find-colleges/articles/college-search/types-of-student-housing/ |
@@ -152,6 +152,9 @@ Fourth, I will use ChatGPT to help test the system with my five evaluation quest
 Finally, I will use AI tools for debugging. If the retriever returns bad chunks, I will show ChatGPT the query, retrieved chunks, and expected answer, then ask how to improve chunking, metadata, or top-k retrieval.
 
 **Milestone 3 — Ingestion and chunking:**
+
+After running the ingestion and chunking script, I generated 62 final chunks from 10 sources after removing noisy chunks that mainly contained promotional text, footer content, unrelated links, or keyword lists.
+
 
 **Milestone 4 — Embedding and retrieval:**
 

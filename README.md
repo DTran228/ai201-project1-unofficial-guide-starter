@@ -14,6 +14,8 @@
      Example: "Student reviews of CS professors at [university] — useful because official
      course descriptions don't reflect teaching style, exam difficulty, or workload." -->
 
+My system covers housing options for undergraduate and international students at U.S. universities. This knowledge is valuable because students need to compare different housing choices before deciding where to live, especially when they are new to the U.S. or unfamiliar with American university housing. Official university housing pages often explain only one school’s policies, while practical housing advice is scattered across guide articles, forums, Reddit threads, and student-focused websites.
+
 ---
 
 ## Document Sources
@@ -24,16 +26,16 @@
 
 | # | Source | Type | URL or file path |
 |---|--------|------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 |Reddit thread: “What’s university accommodation like in the US?” | Reddit discussion thread | https://www.reddit.com/r/AskAnAmerican/comments/1h8wkwa/whats_university_accommodation_like_in_the_us/ |
+| 2 | Study in the USA — “Making the Right Housing Choice: Tips for Success” | Student housing guide article | https://www.studyusa.com/en/article/housing-options-for-international-college-students-in-the-us |
+| 3 | IEFA — “Finding Student Housing in the U.S. for International Students” | International student housing guide | https://www.iefa.org/resources/finding-student-housing-in-the-us-for-international-students |
+| 4 | Times Higher Education — “Six essential tips for finding student housing in the US” | Student advice article | https://www.timeshighereducation.com/student/advice/six-essential-tips-finding-student-housing-us |
+| 5 | College Raptor — “6 Types of Student Housing Options for College Students” | Housing options explainer article | https://www.collegeraptor.com/find-colleges/articles/college-search/types-of-student-housing/ |
+| 6 | OnlineMacha forum — “What are the accommodation options available in the US?” | Study abroad forum thread | https://onlinemacha.com/forum/study-in-usa/what-are-the-accommodation-options-available-in-the-us/#google_vignette |
+| 7 | U.S. News — “College Student Housing: Should I Live On Campus or Off?” | On-campus vs. off-campus advice article | https://www.usnews.com/education/best-colleges/paying-for-college/articles/what-to-know-about-choosing-between-housing-on-or-off-campus |
+| 8 | Futurense — “Finding the Best Student Accommodation in the USA: Complete Guide” | Student accommodation guide article | https://futurense.com/blog/best-student-accommodation-in-the-usa |
+| 9 | Keystone Sports — “University Accommodation Options in the US” | University accommodation guide article | https://keystonesports.uk/university-accommodation-options-in-the-us/ |
+| 10 | Illustrarch — “Complete Guide to Student Housing in the USA” | Complete student housing guide | https://illustrarch.com/schooling/41550-complete-guide-to-student-housing-in-the-usa.html |
 
 ---
 
@@ -46,13 +48,17 @@
      - Any preprocessing you did before chunking (e.g., stripping HTML, removing headers)
      - What your final chunk count was across all documents -->
 
-**Chunk size:**
+Chunk size:
+I used a chunk size of about 400 words/tokens. This size fits my documents because most of them are long guide-style articles with sections about housing types, cost, location, lease terms, roommates, and safety. A 400-token chunk is large enough to keep one housing idea together, but not so large that many unrelated topics are mixed into one chunk.
 
-**Overlap:**
+Overlap:
+I used an overlap of about 75 words/tokens. The overlap helps preserve context when important information continues across chunk boundaries. For example, a section may introduce off-campus housing in one paragraph and then explain utilities, deposits, or commuting in the next paragraph.
 
-**Why these choices fit your documents:**
+Why these choices fit your documents:
+My documents are mostly long articles and forum discussions rather than short reviews. I first cleaned the text by removing obvious web boilerplate such as promotional text, footer content, unrelated links, cookie/banner text, and keyword lists. After generating chunks, I inspected the output and filtered out noisy chunks that did not contain useful housing information.
 
-**Final chunk count:**
+Final chunk count:
+After cleaning and filtering noisy chunks, I generated 62 final chunks from 10 sources. The remaining chunks mostly focus on useful student housing information such as housing types, on-campus and off-campus options, cost, lease terms, roommates, safety, location, and international student concerns.
 
 ---
 
@@ -64,9 +70,11 @@
      Consider: context length limits, multilingual support, accuracy on domain-specific text,
      latency, and local vs. API-hosted. -->
 
-**Model used:**
+Model used:
+I used all-MiniLM-L6-v2 from sentence-transformers as my embedding model. I chose this model because it is lightweight, fast, easy to run locally, and strong enough for semantic search over short guide-style chunks.
 
-**Production tradeoff reflection:**
+Production tradeoff reflection:
+If I were deploying this system for real users and cost was not a constraint, I would compare stronger embedding models based on retrieval accuracy, context length, multilingual support, latency, and cost. A stronger API-hosted model might perform better on vague or complex user questions, but it could be slower and more expensive. I would also consider multilingual support because international students may ask housing questions in different languages.
 
 ---
 
@@ -79,9 +87,31 @@
      Do not just say "I told it to use the documents" — show the actual instruction or explain
      the mechanism. -->
 
-**System prompt grounding instruction:**
+System prompt grounding instruction:
 
-**How source attribution is surfaced in the response:**
+My system instructs the LLM to answer only using the retrieved document chunks. The model is not supposed to use outside knowledge or make assumptions beyond the provided context. If the retrieved chunks do not contain enough information, the model should say that the sources do not provide enough evidence.
+
+The grounding instruction I used is:
+
+You are answering questions for an unofficial guide about student housing options at U.S. universities. Use only the retrieved context chunks provided below. Do not use outside knowledge. If the context does not contain enough information to answer the question, say that the available sources do not provide enough information. When possible, mention which source the information came from.
+
+I also format the prompt so that the retrieved chunks are clearly separated from the user question. Each chunk includes the source file name and chunk ID before the text. This helps the model know exactly what information it is allowed to use.
+
+Example context format:
+
+Source: source3_iefa.pdf
+Chunk ID: 2
+Text: ...
+
+Source: source7_us_news.txt
+Chunk ID: 1
+Text: ...
+
+How source attribution is surfaced in the response:
+
+Each chunk stores metadata, including the source file name and chunk ID. When the system retrieves relevant chunks, it passes that metadata into the prompt along with the chunk text. The final response can then mention the source names used, such as source3_iefa.pdf or source7_us_news.txt.
+
+This does not fully guarantee perfect citation behavior, but it makes the response more grounded because the model sees both the evidence and the source label. I also filtered noisy chunks before retrieval so that the model is less likely to cite irrelevant promotional text, footer content, or navigation text.
 
 ---
 
