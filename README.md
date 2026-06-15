@@ -123,11 +123,11 @@ This does not fully guarantee perfect citation behavior, but it makes the respon
 
 | # | Question | Expected answer | System response (summarized) | Retrieval quality | Response accuracy |
 |---|----------|-----------------|------------------------------|-------------------|-------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | What are the main housing options for students at U.S. universities? | Common options include on-campus dorms, off-campus apartments, shared apartments, homestays, and private student housing. | The system retrieved chunks about on-campus housing, off-campus housing, shared apartments, homestays, and private student housing from multiple housing guide sources. | Relevant | Accurate |
+| 2 | What are the main benefits of living on campus? | Living on campus can provide proximity to classes and campus facilities, stronger community, easier access to peers and faculty, included utilities or meal plans, and more campus support. | The system retrieved chunks explaining that on-campus living connects students with campus facilities, peers, faculty, programs, and residence hall communities. It also retrieved information about all-inclusive housing costs such as utilities, Wi-Fi, furniture, and meal plans. | Relevant | Accurate |
+| 3 | What extra costs should students consider before choosing off-campus housing? | Students should consider utilities, groceries, internet, furniture, transportation, parking, application fees, security deposits, lease terms, and possible penalties. | The system retrieved chunks about application fees, security deposits, utilities, internet, commuting, groceries, lease terms, guarantors, and other costs connected to off-campus housing. | Relevant | Accurate |
+| 4 | Why might an international student choose a homestay? | An international student might choose a homestay for cultural exchange, English practice, meals, local orientation, safety, and support from a host family. | The system retrieved chunks explaining that homestays provide a host family environment, cultural exchange, meals, local orientation, and support for international students adjusting to life in the U.S. | Relevant | Accurate |
+| 5 | What should students compare before choosing a housing option? | Students should compare cost, location, commute, safety, privacy, roommates, lease terms, amenities, meal plans, social environment, and lifestyle needs. | The system retrieved chunks about comparing budget, lifestyle, location, lease terms, amenities, campus proximity, shared living, and the advantages and disadvantages of different housing options. | Relevant | Accurate |
 
 **Retrieval quality:** Relevant / Partially relevant / Off-target  
 **Response accuracy:** Accurate / Partially accurate / Inaccurate
